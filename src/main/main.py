@@ -1,16 +1,16 @@
-import logging
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(
-    format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.INFO,
-    datefmt='%Y-%m-%d %H:%M:%S')
+from api.api_manager import get_api
+from api.config.api_config import get_server_config
+from api.server import Server
+from log import logger
 
 
 def run():
     logger.info("Starting On The Road API 🛣")
+    config = get_server_config()
+    api = get_api()
+    Server().start(config, api)
+    logger.info("Started On The Road API")
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     run()

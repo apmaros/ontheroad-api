@@ -3,13 +3,15 @@ from api.config.api_config import get_server_config
 from api.server import Server
 from log import logger
 
+APP_NAME = 'On The Road API'
+
 
 def run():
-    logger.info("Starting On The Road API 🛣")
+    logger.info(f"Starting  {APP_NAME} 🛣")
     config = get_server_config()
     api = get_api()
     Server().start(config, api)
-    logger.info("Started On The Road API")
+    logger.info(f"Started {APP_NAME} API")
 
 
 if __name__ == '__main__':

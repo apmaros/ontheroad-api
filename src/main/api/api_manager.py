@@ -1,13 +1,13 @@
 import falcon
-from falcon import API
 
 from api.middleware.json_translator import JSONTranslator
 from api.middleware.require_json import RequireJSON
+from api.routes import set_routes
 
 
 def get_api() -> falcon.App:
     api = __build_api()
-    return api
+    return set_routes(api)
 
 
 def __build_api() -> falcon.App:

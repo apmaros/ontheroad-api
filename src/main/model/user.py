@@ -1,11 +1,13 @@
 from dataclasses import dataclass
-from common import current_time_millis
+from common import current_time_millis, get_uuid
 
 
 @dataclass
 class User:
     username: str
     email: str
-    # todo serialize as int - problem is that int and
+    password: str
+    id: str = get_uuid()
+    # todo serialize as int
     created_at: str = str(current_time_millis())
     updated_at: str = None

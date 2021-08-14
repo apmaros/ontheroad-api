@@ -1,8 +1,8 @@
-from db.dynamodb import build_dynamo_client
+from db.dynamodb import build_dynamo_resource
 
 
 def up():
-    client = build_dynamo_client()
+    client = build_dynamo_resource()
     client.create_table(
         TableName='users',
         KeySchema=[

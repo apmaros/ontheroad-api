@@ -9,6 +9,7 @@ from model.user import User
 
 class UserResource(object):
     TABLE = 'users'
+    REQUIRED_PARAMETERS_MISSING_ERR_MSG = {'error': 'One or more required values are missing'}
 
     # todo add validation
     def on_get(self, req, resp):
@@ -16,7 +17,7 @@ class UserResource(object):
         email = get_param(req, 'email')
 
         if username is None or email is None:
-            resp.body = json.dumps({'error': 'One or more required values are missing'})
+            resp.body = json.dumps(self.REQUIRED_PARAMETERS_MISSING_ERR_MSG)
             resp.status = falcon.HTTP_401
             return
 
@@ -32,13 +33,14 @@ class UserResource(object):
     def on_post(self, req, resp):
         username = get_param(req, 'username')
         email = get_param(req, 'email')
+        password = get_param(req, 'password')
 
         if username is None or email is None:
-            resp.body = json.dumps({'error': 'One or more required values are missing'})
+            resp.body = json.dumps(self.REQUIRED_PARAMETERS_MISSING_ERR_MSG)
             resp.status = falcon.HTTP_401
             return
 
-        user = User(username, email)
+        user = User(username, email, password)
         self.db.put_item(self.TABLE, user.__dict__)
 
 

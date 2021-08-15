@@ -18,7 +18,7 @@ def build_dynamo_client():
     aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
     aws_session_token = os.getenv('AWS_SECRET_ACCESS_KEY')
 
-    return _get_session().resource(
+    return _get_session().client(
         'dynamodb',
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_session_token,

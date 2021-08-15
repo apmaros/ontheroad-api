@@ -3,26 +3,20 @@ import json
 import falcon
 
 from api.api_utils import get_param
+from api.resources.constants import MISSING_PARAMS_ERR_MSG
 from api.secret import secure_hash
-from db.data_access.user import get_user_by_email
+from db.data_access.user import get_user_by_email, put_user
 from db.db_client import DbClient
 from model.user import User
 
 
 class UserResource(object):
-    TABLE = 'users'
-    MISSING_PARAMS_ERR_MSG = {'error': 'One or more required parameters are missing'}
+    auth = {
+        'exempt_methods': ['POST']
+    }
 
-    # todo add validation
     def on_get(self, req, resp):
-        email = get_param(req, 'email')
-
-        if email is None:
-            resp.body = json.dumps(self.MISSING_PARAMS_ERR_MSG)
-            resp.status = falcon.HTTP_401
-            return
-
-        user = get_user_by_email(self.db, email)
+        user = req.context['user']
 
         if user is None:
             resp.status = falcon.HTTP_404
@@ -37,7 +31,7 @@ class UserResource(object):
         password = get_param(req, 'password')
 
         if username is None or email is None:
-            resp.body = json.dumps(self.MISSING_PARAMS_ERR_MSG)
+            resp.body = json.dumps(MISSING_PARAMS_ERR_MSG)
             resp.status = falcon.HTTP_401
             return
 
@@ -46,7 +40,7 @@ class UserResource(object):
             email=email,
             password=secure_hash(password)
         )
-        self.db.put_item(self.TABLE, user.__dict__)
+        put_user(self.db, user)
 
 
     def __init__(self, db: DbClient):

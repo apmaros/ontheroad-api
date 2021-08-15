@@ -32,9 +32,9 @@ class LoginResource(object):
                 resp.status = falcon.HTTP_404
                 return
 
-            if secret_is_valid(password, user['password']):
+            if secret_is_valid(password, user.password):
                 payload = {
-                    'user_id': str(user['id']),
+                    'user_id': str(user.id),
                     'exp': datetime.utcnow() + timedelta(
                         hours=self.jwt_config.expire_delta_hours
                     )
@@ -44,7 +44,7 @@ class LoginResource(object):
                     self.jwt_config.secret,
                     self.jwt_config.algorithm
                 )
-                token = jwt.decode(jwt_token, self.jwt_config.secret, algorithms=["HS256"])
+                # token = jwt.decode(jwt_token, self.jwt_config.secret, algorithms=["HS256"])
                 resp.body = json.dumps({'token': jwt_token})
             else:
                 set_invalid_credentials(resp)

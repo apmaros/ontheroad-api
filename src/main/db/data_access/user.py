@@ -4,7 +4,10 @@ from model.user import User
 TABLE = 'users'
 
 
-# todo return validated user object
+def put_user(db: DbClient, user: User):
+    db.put_item(TABLE, user.as_dict())
+
+
 def get_user_by_email(db: DbClient, email: str) -> User:
     # todo extract to config, maybe - `UsersTableConfig
     result = db.query_index(TABLE, 'users-by-email-index', 'email', email)

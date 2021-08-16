@@ -1,8 +1,8 @@
-from db.dynamodb import build_dynamo_client
+from aws.clients import get_dynamodb_client
 
 
 def up():
-    client = build_dynamo_client()
+    client = get_dynamodb_client()
 
     client.update_table(
         TableName="users",

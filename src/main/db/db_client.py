@@ -1,14 +1,13 @@
-from dataclasses import dataclass
-
-from db.dynamodb import build_dynamo_resource
 from boto3.dynamodb.conditions import Key
+
+from aws.clients import get_dynamodb_resource
 
 
 class DbClient:
     client = None
 
     def __init__(self):
-        self.client = build_dynamo_resource()
+        self.client = get_dynamodb_resource()
 
     def put_item(self, table: str, item: map):
         self.client.Table(table).put_item(Item=item)
@@ -25,7 +24,3 @@ class DbClient:
             KeyConditionExpression=Key(key).eq(value),
         )
         return result['Items'] if 'Items' in result else None
-
-
-if __name__ == '__main__':
-    pass

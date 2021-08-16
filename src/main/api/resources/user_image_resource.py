@@ -41,11 +41,3 @@ class UserImageResource(object):
 
         resp.status = falcon.HTTP_200
         resp.body = json.dumps(image.as_dict())
-
-# {
-#   "user_id": "35053f9b-e382-4e92-ba95-f1d707fcb403",
-#   "name": "some image",
-#   "category": null,
-#   "created_at": "1629098132169",
-#   "id": "9b7f4962-867a-45e8-80b7-4ba7ffc9fc41"
-# }

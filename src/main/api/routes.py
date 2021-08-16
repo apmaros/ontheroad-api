@@ -4,7 +4,7 @@ from api.resources.image_resource import ImageResource
 from api.resources.index import Index
 from api.resources.login_resource import LoginResource
 from api.resources.statz import Statz
-from api.resources.userResource import UserResource
+from api.resources.user_resource import UserResource
 from api.resources.user_image_resource import UserImageResource
 
 

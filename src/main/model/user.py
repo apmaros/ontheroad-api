@@ -25,6 +25,9 @@ class User:
             updated_at=user_dict.get('updated_at', None)
         )
 
+    def as_dict(self):
+        return self.__dict__
+
     def as_public_dict(self):
         user_dict = self.__dict__
         for key in self.protected_keys:

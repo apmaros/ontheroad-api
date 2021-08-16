@@ -5,7 +5,7 @@ import falcon
 from api.api_utils import get_param
 from api.resources.constants import MISSING_PARAMS_ERR_MSG
 from api.secret import secure_hash
-from db.data_access.user import get_user_by_email, put_user
+from db.data_access.user import put_user
 from db.db_client import DbClient
 from model.user import User
 
@@ -24,7 +24,6 @@ class UserResource(object):
             resp.body = json.dumps(user.as_public_dict())
             resp.status = falcon.HTTP_200
 
-
     def on_post(self, req, resp):
         username = get_param(req, 'username')
         email = get_param(req, 'email')
@@ -42,8 +41,5 @@ class UserResource(object):
         )
         put_user(self.db, user)
 
-
     def __init__(self, db: DbClient):
         self.db = db
-
-

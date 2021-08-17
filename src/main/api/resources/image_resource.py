@@ -1,11 +1,8 @@
 import json
 import falcon
-
-from api.api_utils import get_param
-from api.resources.constants import MISSING_PARAMS_ERR_MSG
-from db.data_access.image import get_image_by_id, get_images_by_user_id, put_image
+from db.data_access.image import get_image_by_id
 from db.db_client import DbClient
-from model.image import Image
+from db.image_store import ImageStore
 
 
 class ImageResource(object):
@@ -13,17 +10,23 @@ class ImageResource(object):
         'exempt_methods': ['GET']
     }
 
-    def on_get(self, _, resp, image_id):
+    def on_get(self, req, resp, image_id):
         image = get_image_by_id(self.db, image_id)
-
-        # todo fetch payload from cloudfront
-        #   - path is based on the userid, category and name
 
         if image is None:
             resp.status = falcon.HTTP_404
-        else:
-            resp.status = falcon.HTTP_200
-            resp.body = json.dumps(image.as_dict())
+            return
 
-    def __init__(self, db: DbClient):
+        only_meta = bool(req.params.get("only-meta"))
+        if only_meta:
+            image_resp = image.as_dict()
+        else:
+            body = self.image_store.get_from_cdn(image)
+            image_resp = image.as_dict_with_body(body)
+
+        resp.body = json.dumps(image_resp)
+        resp.status = falcon.HTTP_200
+
+    def __init__(self, db: DbClient, image_store: ImageStore):
         self.db = db
+        self.image_store = image_store

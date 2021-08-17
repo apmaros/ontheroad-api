@@ -7,7 +7,7 @@ TABLE = 'images'
 
 
 def put_image(db: DbClient, image: Image):
-    db.put_item(TABLE, image.as_dict())
+    db.put_item(TABLE, image.as_dict_without_body())
 
 
 def get_image_by_id(db: DbClient, image_id: str) -> Image:

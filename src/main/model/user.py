@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from common import current_time_millis, get_uuid
+from common import current_time_millis, get_uuid, filter_none_keys
 
 
 @dataclass
@@ -29,12 +29,8 @@ class User:
         return self.__dict__
 
     def as_public_dict(self):
-        user_dict = self.__dict__
+        obj_dict = self.__dict__
         for key in self.protected_keys:
-            user_dict.pop(key)
+            obj_dict.pop(key)
 
-        for key in list(user_dict):
-            if user_dict[key] is None:
-                user_dict.pop(key)
-
-        return user_dict
+        return filter_none_keys(obj_dict)

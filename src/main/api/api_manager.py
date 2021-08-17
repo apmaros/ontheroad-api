@@ -7,12 +7,14 @@ from api.middleware.jwt_config import default_jwt_config
 from api.middleware.require_json import RequireJSON
 from api.routes import set_routes
 from db.db_client import DbClient
+from db.image_store import ImageStore
 
 
 def get_api() -> falcon.App:
     db = DbClient()
+    image_store = ImageStore()
     api = __build_api(db)
-    return set_routes(api, db)
+    return set_routes(api, db, image_store)
 
 
 def __build_api(db: DbClient) -> falcon.App:

@@ -1,4 +1,4 @@
-from aws.services import get_dynamodb_client
+from services.aws import get_dynamodb_client
 
 
 def up():

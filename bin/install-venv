@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# example:
+#   - `source ./bin/instal-venv`
+#
 # Installs virtual environment
 #   - purges current environment to start from clear state
 #   - must be ron from project root

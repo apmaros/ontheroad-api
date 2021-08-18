@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SRC_DIR="proto/ontheroad"
+DST_DIR="generated/proto"
+
+mkdir -pv $DST_DIR
+
+find ./proto -type f -name '*.proto' -print0 | while IFS= read -r -d '' file; do
+   protoc -I="$SRC_DIR" --python_out="$DST_DIR" "${file}"
+done

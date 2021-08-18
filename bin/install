@@ -1,11 +1,14 @@
 #!/bin/bash
 
 # example:
-#   - `source ./bin/instal-venv`
+#   - `source ./bin/install`
 #
 # Installs virtual environment
 #   - purges current environment to start from clear state
-#   - must be ron from project root
+#   - must be run from project root
+# Compiles Protobuf files
+
+export PYTHONPATH="src/main:generated/proto"
 
 echo "installing dev environment"
 
@@ -20,3 +23,5 @@ echo "installing test dependencies"
 pip install -r test-requirements.txt
 # reactivate env after installing pytest
 deactivate && source venv/bin/activate
+echo "compiling proto"
+./bin/compile-proto

@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+message PostUserImageRequest {
+  optional string name = 1;
+  optional int32 category = 2;
+  optional bytes image_body = 3;
+  optional bytes thumbnail_body = 4;
+}

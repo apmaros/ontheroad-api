@@ -2,7 +2,30 @@ syntax = "proto2";
 
 message PostUserImageRequest {
   optional string name = 1;
-  optional int32 category = 2;
+  optional string category = 2;
   optional bytes image_body = 3;
   optional bytes thumbnail_body = 4;
+}
+
+message PostUserImageResponse {
+  optional string id = 1;
+}
+
+message Image {
+  optional string user_id = 1;
+  optional string name = 2;
+  optional bytes thumbnail_body = 3;
+  optional bytes image_body = 4;
+  optional string category = 5;
+  optional int64 created_at = 6;
+  optional string id = 7;
+}
+
+message GetImageResponse {
+  optional Image image = 1;
+}
+
+
+message GetImagesResponse {
+  repeated Image images = 1;
 }

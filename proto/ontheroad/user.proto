@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+message GetUserResponse {
+  optional string id = 1;
+  optional string username = 2;
+  optional string email = 3;
+}
+
+message PostUserRequest {
+  optional string username = 1;
+  optional string email = 2;
+  optional string password = 3;
+}
+
+message PostUserResponse {
+  optional string id = 1;
+}

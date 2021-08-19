@@ -1,5 +1,5 @@
-import json
 import falcon
+from api.resources.image.image_serializer import get_image_response_serializer
 from db.data_access.image import get_image_by_id
 from db.db_client import DbClient
 from db.image_store import ImageStore
@@ -10,6 +10,7 @@ class ImageResource(object):
         'exempt_methods': ['GET']
     }
 
+    @falcon.after(get_image_response_serializer)
     def on_get(self, req, resp, image_id):
         image = get_image_by_id(self.db, image_id)
 
@@ -17,14 +18,10 @@ class ImageResource(object):
             resp.status = falcon.HTTP_404
             return
 
-        only_meta = bool(req.params.get("only-meta"))
-        if only_meta:
-            image_resp = image.as_dict()
-        else:
-            body = self.image_store.get_from_cdn(image)
-            image_resp = image.as_dict_with_body(body)
+        image_body = self.image_store.get_from_cdn(image)
+        image = image.set_body(image_body)
 
-        resp.body = json.dumps(image_resp)
+        resp.text = image
         resp.status = falcon.HTTP_200
 
     def __init__(self, db: DbClient, image_store: ImageStore):

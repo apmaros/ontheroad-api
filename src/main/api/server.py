@@ -1,5 +1,4 @@
 from wsgiref import simple_server
-
 from api.config.api_config import ServerConfig
 from log import logger
 

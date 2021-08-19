@@ -1,11 +1,11 @@
 import falcon
 
-from api.resources.image_resource import ImageResource
+from api.resources.image.image_resource import ImageResource
 from api.resources.index import Index
-from api.resources.login_resource import LoginResource
+from api.resources.login.login_resource import LoginResource
 from api.resources.statz import Statz
-from api.resources.user_resource import UserResource
-from api.resources.user_image_resource import UserImageResource
+from api.resources.user.user_resource import UserResource
+from api.resources.image.user_image_resource import UserImageResource
 
 
 def set_routes(api: falcon.App, db, image_store) -> falcon.App:

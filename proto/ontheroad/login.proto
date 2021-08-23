@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+message PostLoginRequest {
+  optional string email = 1;
+  optional string password = 2;
+}
+
+message PostLoginResponse {
+  optional string token = 1;
+}

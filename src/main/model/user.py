@@ -27,10 +27,3 @@ class User:
 
     def as_dict(self):
         return self.__dict__
-
-    def as_public_dict(self):
-        obj_dict = self.__dict__
-        for key in self.protected_keys:
-            obj_dict.pop(key)
-
-        return filter_none_keys(obj_dict)

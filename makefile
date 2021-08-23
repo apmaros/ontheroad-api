@@ -2,8 +2,8 @@
 # otherwise fails with makefile:X: *** missing separator.  Stop.
 
 install:
-	PIP_CONFIG_FILE=pip.conf pip install -r requirements.txt
+	PIP_CONFIG_FILE=pip.conf pip install -r requirements/prod.txt
 run:
-	bin/run
+	python src/main/main.py
 test:
-	echo "here come tests"
+	JWT_SECRET=secret python -m pytest

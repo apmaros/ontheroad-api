@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# example:
+#   - `source ./bin/install-dev`
+#
+# Installs virtual environment
+#   - purges current environment to start from clear state
+#   - must be run from project root
+# Compiles Protobuf files
+
+export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"
+
+ENV_NAME=otr-dev
+
+echo "installing dev environment"
+
+echo "purging existing environment"
+rm -rf ./"${ENV_NAME}"
+echo "initializing new environment"
+virtualenv "${ENV_NAME}"
+# shellcheck disable=SC1090
+source ./"${ENV_NAME}"/bin/activate
+echo "installing dependencies"
+pip install -r requirements/prod.txt
+echo "installing dev dependencies"
+pip install -r requirements/dev.txt
+# reactivate env after installing pytest
+deactivate && source "${ENV_NAME}"/bin/activate
+echo "compiling proto"
+./bin/compile-proto

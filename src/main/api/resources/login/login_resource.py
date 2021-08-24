@@ -23,8 +23,7 @@ class LoginResource(object):
         msg = req.body
 
         if msg.email is None or msg.password is None:
-            resp.body = json.dumps({'error': 'One or more values is missing'})
-            resp.status = falcon.HTTP_401
+            resp.status = falcon.HTTP_400
             return
         try:
             user = get_user_by_email(self.db, msg.email)
@@ -47,18 +46,14 @@ class LoginResource(object):
                 )
 
                 # token = jwt.decode(jwt_token, self.jwt_config.secret, algorithms=["HS256"])
-                resp.body = jwt_token
+                resp.text = jwt_token
             else:
-                _set_invalid_credentials(resp)
+                resp.status = falcon.HTTP_400
         except ValueError:
             self.logger.debug('cant verify password')
-            _set_invalid_credentials(resp)
+            resp.status = falcon.HTTP_400
 
     def __init__(self, db: DbClient):
         self.jwt_config = default_jwt_config
         self.db: DbClient = db
 
-
-def _set_invalid_credentials(resp):
-    resp.body = json.dumps({'error': 'Credentials are not valid'})
-    resp.status = falcon.HTTP_400

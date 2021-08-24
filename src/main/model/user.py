@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from common import current_time_millis, get_uuid, filter_none_keys
+from common import current_time_millis, get_uuid
 
 
 @dataclass
@@ -13,17 +13,3 @@ class User:
     updated_at: str = None
 
     protected_keys = ['password', 'id']
-
-    @staticmethod
-    def from_dict(user_dict):
-        return User(
-            username=user_dict['username'],
-            email=user_dict['email'],
-            password=user_dict['password'],
-            id=user_dict['id'],
-            created_at=user_dict.get('created_at', None),
-            updated_at=user_dict.get('updated_at', None)
-        )
-
-    def as_dict(self):
-        return self.__dict__

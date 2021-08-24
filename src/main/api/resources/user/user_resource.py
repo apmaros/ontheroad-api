@@ -1,6 +1,6 @@
 import falcon
 
-from api.resources.user.useer_mapper import user_from_proto
+from api.resources.user.user_mapper import user_from_proto
 from api.resources.user.user_serializer import (
     get_user_response_serializer,
     post_user_request_deserializer,

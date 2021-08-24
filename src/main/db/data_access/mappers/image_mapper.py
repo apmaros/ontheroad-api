@@ -21,5 +21,3 @@ def image_without_body_to_dict(image: Image):
     image_dict.pop('body', None)
 
     return image_dict
-
-

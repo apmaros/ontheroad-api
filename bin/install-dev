@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # example:
 #   - `source ./bin/install-dev`
@@ -11,20 +12,24 @@
 export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"
 
 ENV_NAME=otr-dev
+GREEN='\033[1;32m'
+NC='\033[0m' # No Color
 
-echo "installing dev environment"
+echo -e "${GREEN}installing dev environment${NC}"
 
-echo "purging existing environment"
+echo -e "${GREEN}purging existing environment${NC}"
 rm -rf ./"${ENV_NAME}"
-echo "initializing new environment"
+echo -e "${GREEN}initializing new environment${NC}"
 virtualenv "${ENV_NAME}"
 # shellcheck disable=SC1090
 source ./"${ENV_NAME}"/bin/activate
-echo "installing dependencies"
+echo -e "${GREEN}installing dependencies${NC}"
 pip install -r requirements/prod.txt
-echo "installing dev dependencies"
+echo -e "${GREEN}installing dev dependencies${NC}"
 pip install -r requirements/dev.txt
 # reactivate env after installing pytest
 deactivate && source "${ENV_NAME}"/bin/activate
-echo "compiling proto"
+echo -e "${GREEN}compiling proto${NC}"
 ./bin/compile-proto
+
+echo -e "${GREEN}finished! 🎉${NC}"

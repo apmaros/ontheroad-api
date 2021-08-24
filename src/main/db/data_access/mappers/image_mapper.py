@@ -17,4 +17,9 @@ def image_to_dict(image: Image):
 
 
 def image_without_body_to_dict(image: Image):
-    return image_to_dict(image).pop('body', None)
+    image_dict = image.__dict__.copy()
+    image_dict.pop('body', None)
+
+    return image_dict
+
+

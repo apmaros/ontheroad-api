@@ -24,10 +24,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
       - name: Deploy ontheroad-s3-sync lambda
-        id: iontr-s3-lambda
+        id: ontheroad-s3-lambda
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
-          name: ${{ steps.env-name.outputs.environment }}-lambda
+          name: ontheroad-s3-lambda
           template: cloudformation/ontheroad-s3-sync-template.yaml
           no-fail-on-empty-changeset: "1"
 

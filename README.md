@@ -5,6 +5,12 @@
 ## Requirements
 python3+
 
+## Usage
+
+### pre-commit
+- `pip install pre-commit`
+- `pre-commit install`
+
 ## Run
 1. `make install`
 2. `make run`

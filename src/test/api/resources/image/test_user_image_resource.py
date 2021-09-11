@@ -1,9 +1,9 @@
 from unittest.mock import patch
 
 from generated.proto import image_pb2
-from generated.proto.image_pb2 import Image
 from common import get_uuid, current_time_millis
 from db.image_store import ImageStore
+from model.image import Image
 from model.user import User
 from model_assert.image import assert_image_without_body
 from util.api_util import get_testing_client

@@ -1,6 +1,6 @@
 from boto3.dynamodb.conditions import Key
 
-from services.aws.services import get_dynamodb_resource
+from src.main.services.aws.services import get_dynamodb_resource
 
 
 class DbClient:
@@ -10,9 +10,11 @@ class DbClient:
         self.client = get_dynamodb_resource()
 
     def put_item(self, table: str, item: map):
+        assert self.client
         self.client.Table(table).put_item(Item=item)
 
     def get_item(self, table: str, key: map):
+        assert self.client
         result = self.client.Table(table).get_item(Key=key)
         return result['Item'] if 'Item' in result else None
 

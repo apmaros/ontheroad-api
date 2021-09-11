@@ -9,7 +9,7 @@ set -e
 #   - must be run from project root
 # Compiles Protobuf files
 
-export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"
+export PYTHONPATH="${PWD}:${PWD}/src:${PWD}/generated/"
 
 ENV_NAME=otr-dev
 GREEN='\033[1;32m'

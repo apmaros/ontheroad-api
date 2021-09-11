@@ -1,12 +1,12 @@
 import falcon
 
 from falcon_auth import FalconAuthMiddleware
-from api.middleware.jwt_auth import JwtAuth
-from api.middleware.jwt_config import default_jwt_config
-from api.middleware.require_proto import RequireProto
-from api.routes import set_routes
-from db.db_client import DbClient
-from db.image_store import ImageStore
+from src.main.api.middleware.jwt_auth import JwtAuth
+from src.main.api.middleware.jwt_config import default_jwt_config
+from src.main.api.middleware.require_proto import RequireProto
+from src.main.api.routes import set_routes
+from src.main.db.db_client import DbClient
+from src.main.db.image_store import ImageStore
 
 
 def get_api() -> falcon.App:

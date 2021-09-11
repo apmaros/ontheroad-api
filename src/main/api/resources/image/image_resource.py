@@ -1,8 +1,10 @@
 import falcon
-from api.resources.image.image_serializer import get_image_response_serializer
-from db.data_access.image import get_image_by_id
-from db.db_client import DbClient
-from db.image_store import ImageStore
+
+from src.main.db.data_access.image import get_image_by_id
+from src.main.db.db_client import DbClient
+from src.main.db.image_store import ImageStore
+from .image_serializer import get_image_response_serializer
+
 
 
 class ImageResource(object):

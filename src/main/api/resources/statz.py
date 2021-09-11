@@ -4,7 +4,7 @@ import string
 import falcon
 
 
-def get_version() -> string:
+def get_version() -> str:
     version = 'UNKNOWN'
     if 'APP_VERSION' in os.environ:
         version = os.environ['APP_VERSION']

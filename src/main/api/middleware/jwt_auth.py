@@ -1,7 +1,8 @@
 from falcon_auth import JWTAuthBackend
-from api.middleware.jwt_config import JwtConfig
-from db.data_access.user import get_user_by_id
-from db.db_client import DbClient
+
+from src.main.api.middleware.jwt_config import JwtConfig
+from src.main.db.data_access.user import get_user_by_id
+from src.main.db.db_client import DbClient
 
 
 class JwtAuth(object):

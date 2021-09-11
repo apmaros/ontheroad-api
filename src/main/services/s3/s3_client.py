@@ -1,10 +1,12 @@
-from services.aws.services import get_s3_client
+from typing import Optional
+
+from src.main.services.aws.services import get_s3_client
 
 BUCKET = "apmaros-store"
 
 
 class S3Client:
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = get_s3_client()
 
     def put(self, key, body):
@@ -14,7 +16,7 @@ class S3Client:
             Key=key
         )
 
-    def get(self, key) -> bytes:
+    def get(self, key) -> Optional[bytes]:
         object = self.client.get_object(
             Bucket=BUCKET,
             Key=key

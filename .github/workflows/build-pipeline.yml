@@ -25,11 +25,11 @@ jobs:
           aws-region: eu-west-1
       - name: Install dependencies
         run: |
-          echo ${PWD}
           ./bin/compile-proto
           pip install -r requirements/prod.txt
           pip install -r requirements/dev.txt
       - name: Test with pytest
         run: |
           export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"
+          export AWS_PROFILE_NAME=GitHubActions
           make test

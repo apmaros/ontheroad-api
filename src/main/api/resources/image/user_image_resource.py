@@ -1,11 +1,13 @@
 import falcon
 
-from src.main.api.resources.image.image_mapper import image_from_proto
-from src.main.api.resources.image.image_serializer import get_user_images_response_serializer, \
-    post_user_image_request_deserializer, post_user_image_response_serializer
-from src.main.db.data_access.image import get_images_by_user_id, put_image
-from src.main.db.db_client import DbClient
-from src.main.db.image_store import ImageStore
+from api.resources.image.image_mapper import image_from_proto
+from api.resources.image.image_serializer import (
+    get_user_images_response_serializer,
+    post_user_image_request_deserializer,
+    post_user_image_response_serializer)
+from db.data_access.image import get_images_by_user_id, put_image
+from db.db_client import DbClient
+from db.image_store import ImageStore
 
 
 class UserImageResource(object):

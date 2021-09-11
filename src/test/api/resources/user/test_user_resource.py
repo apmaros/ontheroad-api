@@ -2,9 +2,9 @@ from unittest.mock import patch
 
 from generated.proto import user_pb2
 from generated.proto.user_pb2 import PostUserRequest
-from src.main.model.user import User
-from src.test.util.api_util import get_testing_client
-from src.test.util.security_util import mock_jwt_token
+from model.user import User
+from util.api_util import get_testing_client
+from util.security_util import mock_jwt_token
 
 SECRET = mock_jwt_token()
 

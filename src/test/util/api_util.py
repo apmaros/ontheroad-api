@@ -1,6 +1,6 @@
 from falcon import testing
 
-from src.main.api.api_manager import get_api
+from api.api_manager import get_api
 
 
 def get_testing_client():

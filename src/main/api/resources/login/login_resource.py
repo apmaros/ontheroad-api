@@ -3,12 +3,13 @@ from datetime import datetime, timedelta
 import falcon
 import jwt
 
-from src.main.api.middleware.jwt_config import default_jwt_config
-from src.main.api.resources.login.login_serializer import post_login_request_deserializer, \
-    post_login_response_serializer
-from src.main.api.secret import secret_is_valid
-from src.main.db.data_access.user import get_user_by_email
-from src.main.db.db_client import DbClient
+from api.middleware.jwt_config import default_jwt_config
+from api.resources.login.login_serializer import (
+    post_login_request_deserializer,
+    post_login_response_serializer)
+from api.secret import secret_is_valid
+from db.data_access.user import get_user_by_email
+from db.db_client import DbClient
 
 
 class LoginResource(object):

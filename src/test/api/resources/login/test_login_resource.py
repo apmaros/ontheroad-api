@@ -5,9 +5,9 @@ from generated.proto.login_pb2 import (
     PostLoginRequest,
     PostLoginResponse
 )
-from src.main.api.secret import secure_hash
-from src.main.model.user import User
-from src.test.util.api_util import get_testing_client
+from api.secret import secure_hash
+from model.user import User
+from util.api_util import get_testing_client
 
 user = User(
     username="john",

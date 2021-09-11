@@ -1,9 +1,9 @@
 
 from log import logger
 
-from src.main.api.api_manager import get_api
-from src.main.api.config.api_config import get_server_config
-from src.main.api.server import Server
+from api.api_manager import get_api
+from api.config.api_config import get_server_config
+from api.server import Server
 
 APP_NAME = 'On The Road API'
 

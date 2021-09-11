@@ -2,10 +2,10 @@ from unittest.mock import patch
 
 from generated.proto import image_pb2
 from generated.proto.image_pb2 import Image
-from src.main.common import get_uuid, current_time_millis
-from src.main.db.image_store import ImageStore
-from src.test.model_assert.image import assert_image
-from src.test.util.api_util import get_testing_client
+from common import get_uuid, current_time_millis
+from db.image_store import ImageStore
+from model_assert.image import assert_image
+from util.api_util import get_testing_client
 
 user_id = get_uuid()
 image_id = get_uuid()

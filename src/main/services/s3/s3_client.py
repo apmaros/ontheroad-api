@@ -1,6 +1,6 @@
 from typing import Optional
 
-from src.main.services.aws.services import get_s3_client
+from services.aws.services import get_s3_client
 
 BUCKET = "apmaros-store"
 

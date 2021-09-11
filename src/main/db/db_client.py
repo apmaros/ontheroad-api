@@ -1,6 +1,6 @@
 from boto3.dynamodb.conditions import Key
 
-from src.main.services.aws.services import get_dynamodb_resource
+from services.aws.services import get_dynamodb_resource
 
 
 class DbClient:

@@ -1,6 +1,5 @@
 on: [ pull_request ]
 
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -28,8 +27,9 @@ jobs:
           ./bin/compile-proto
           pip install -r requirements/prod.txt
           pip install -r requirements/dev.txt
-      - name: Test with pytest
+          python3 -m pip install types-requests
+      - name: Check Style and Test
         run: |
           export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"
-          export AWS_PROFILE_NAME=GitHubActions
+          mypy src
           make test

@@ -1,7 +1,9 @@
+
+from log import logger
+
 from api.api_manager import get_api
 from api.config.api_config import get_server_config
 from api.server import Server
-from log import logger
 
 APP_NAME = 'On The Road API'
 

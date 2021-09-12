@@ -1,11 +1,11 @@
 from unittest.mock import patch
 
+from generated.proto import image_pb2
 from common import get_uuid, current_time_millis
 from db.image_store import ImageStore
 from model.image import Image
 from model.user import User
 from model_assert.image import assert_image_without_body
-from proto import image_pb2
 from util.api_util import get_testing_client
 from util.security_util import mock_jwt_token
 

@@ -1,4 +1,3 @@
-import string
 
 from passlib.context import CryptContext
 
@@ -9,7 +8,7 @@ pwd_context = CryptContext(
 )
 
 
-def secure_hash(secret) -> string:
+def secure_hash(secret) -> str:
     return pwd_context.hash(secret)
 
 

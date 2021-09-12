@@ -1,7 +1,8 @@
 from unittest.mock import patch
 
+from generated.proto import user_pb2
+from generated.proto.user_pb2 import PostUserRequest
 from model.user import User
-from proto import user_pb2
 from util.api_util import get_testing_client
 from util.security_util import mock_jwt_token
 
@@ -59,7 +60,7 @@ def test_post_user(put_user_mock):
 
 @patch("api.resources.user.user_resource.put_user")
 def test_post_user_when_incomplete_req_returns_400_status(put_user_mock):
-    proto_req = user_pb2.PostUserRequest()
+    proto_req = PostUserRequest()
     proto_req.email = "anotherjohn@doe.com"
     proto_req.password = "secret"
     body = proto_req.SerializeToString()

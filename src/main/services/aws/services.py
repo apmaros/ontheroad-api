@@ -41,7 +41,6 @@ def _get_client(service_name: str):
 
 def _get_session():
     return boto3.Session(
-        profile_name='personal',
         region_name='eu-west-1'
     )
 

@@ -45,7 +45,7 @@ def post_user_image_response_serializer(req, resp, resource) -> image_pb2.PostUs
 
 
 # todo remove checks
-def _serialize_image(image: Image) -> image_pb2.Image():
+def _serialize_image(image: Image) -> image_pb2.Image:
     proto_image = image_pb2.Image()
     proto_image.user_id = image.user_id
     proto_image.name = image.name

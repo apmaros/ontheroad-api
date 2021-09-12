@@ -1,4 +1,5 @@
 import falcon
+
 from api.resources.image.image_serializer import get_image_response_serializer
 from db.data_access.image import get_image_by_id
 from db.db_client import DbClient

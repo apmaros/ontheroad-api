@@ -1,9 +1,10 @@
 from unittest.mock import patch
+
+from generated.proto import image_pb2
 from common import get_uuid, current_time_millis
 from db.image_store import ImageStore
 from model.image import Image
 from model_assert.image import assert_image
-from proto import image_pb2
 from util.api_util import get_testing_client
 
 user_id = get_uuid()
@@ -13,10 +14,10 @@ created_at = current_time_millis()
 mock_image = Image(
     user_id=user_id,
     name="my-mock-image",
-    thumbnail_body=str.encode("image_thumbnail"),
-    category='sport',
+    thumbnail_body="my-thumbnail".encode('UTF-8'),
+    body="my-body".encode('UTF-8'),
     created_at=created_at,
-    id=image_id,
+    id=image_id
 )
 
 

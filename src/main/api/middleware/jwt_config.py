@@ -1,12 +1,11 @@
 import os
-import string
 from dataclasses import dataclass
 
 
 @dataclass
 class JwtConfig:
-    secret: string
-    algorithm: string
+    secret: str
+    algorithm: str
     expire_delta_hours: int
 
 

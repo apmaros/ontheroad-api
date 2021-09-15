@@ -2,25 +2,21 @@ from unittest.mock import patch
 
 from generated.proto import user_pb2
 from generated.proto.user_pb2 import PostUserRequest
+from generator import make_mock_user
 from model.user import User
 from util.api_util import get_testing_client
 from util.security_util import mock_jwt_token
 
 SECRET = mock_jwt_token()
 
-user = User(
-    username="john",
-    email="john@doe.com",
-    password="secret"
-)
+user = make_mock_user()
 
 
 @patch("api.middleware.jwt_auth.get_user_by_id")
 def test_get_user(get_user_by_id_mock):
     get_user_by_id_mock.return_value = user
     result = get_testing_client().simulate_get(
-        path=f'/user',
-        headers={'Authorization': f'JWT {SECRET}'}
+        path=f"/user", headers={"Authorization": f"JWT {SECRET}"}
     )
 
     assert result.status_code == 200
@@ -42,11 +38,7 @@ def test_post_user(put_user_mock):
     body = proto_req.SerializeToString()
 
     result = get_testing_client().simulate_post(
-        path=f'/user',
-        body=body,
-        headers={
-            'Content-Type': 'application/protobuf',
-        }
+        path=f"/user", body=body, headers={"Content-Type": "application/protobuf"}
     )
 
     assert result.status_code == 200
@@ -66,11 +58,7 @@ def test_post_user_when_incomplete_req_returns_400_status(put_user_mock):
     body = proto_req.SerializeToString()
 
     result = get_testing_client().simulate_post(
-        path=f'/user',
-        body=body,
-        headers={
-            'Content-Type': 'application/protobuf',
-        }
+        path=f"/user", body=body, headers={"Content-Type": "application/protobuf"}
     )
 
     assert result.status_code == 400

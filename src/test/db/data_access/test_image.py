@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 from common import get_uuid, current_time_millis
 from db.data_access.image import put_image, get_image_by_id, get_images_by_user_id
 from db.db_client import DbClient
+from generator import make_mock_image
 from model.image import Image
 from util.fakes import FakeBinary
 
@@ -9,16 +10,7 @@ image_id = get_uuid()
 user_id = get_uuid()
 created_at = str(current_time_millis())
 
-
-mock_image = Image(
-    user_id=user_id,
-    name="my-image",
-    image_body=str.encode("somebody"),
-    thumbnail_body=str.encode("some-thumb-body"),
-    category="sport",
-    created_at=created_at,
-    id=image_id,
-)
+mock_image = make_mock_image(user_id=user_id, image_id=image_id, created_at=created_at)
 
 mock_image_dic = {
     "user_id": user_id,

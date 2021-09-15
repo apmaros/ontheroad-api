@@ -3,38 +3,27 @@ from unittest.mock import patch
 from generated.proto import image_pb2
 from common import get_uuid, current_time_millis
 from db.image_store import ImageStore
+from generator import make_mock_image, make_mock_user
 from model.image import Image
-from model.user import User
 from model_assert.image import assert_image_without_body
 from util.api_util import get_testing_client
 from util.security_util import mock_jwt_token
 
 SECRET = mock_jwt_token()
 
-user = User(
-    username="john",
-    email="john@doe.com",
-    password="secret"
-)
+user = make_mock_user()
 
 user_id = user.id
 image_id = get_uuid()
 created_at = current_time_millis()
 
-mock_image = Image(
-    user_id=user_id,
-    name="my-mock-image",
-    thumbnail_body=str.encode("image_thumbnail"),
-    category='sport',
-    created_at=created_at,
-    id=image_id,
-)
+mock_image = make_mock_image(user_id=user_id, created_at=created_at, image_id=image_id)
 
 another_mock_image = Image(
     user_id=user_id,
     name="my-another-mock-image",
     thumbnail_body=str.encode("image_thumbnail"),
-    category='dance',
+    category="dance",
     created_at=created_at,
     id=image_id,
 )
@@ -47,8 +36,7 @@ def test_get_user_image_resource(get_user_by_id_mock, get_image_by_user_id_mock)
     get_image_by_user_id_mock.return_value = [mock_image, another_mock_image]
 
     result = get_testing_client().simulate_get(
-        path=f'/image',
-        headers={'Authorization': f'JWT {SECRET}'}
+        path=f"/image", headers={"Authorization": f"JWT {SECRET}"}
     )
 
     assert result.status_code == 200
@@ -66,13 +54,12 @@ def test_get_user_image_resource(get_user_by_id_mock, get_image_by_user_id_mock)
 @patch("api.resources.image.user_image_resource.get_images_by_user_id")
 @patch("api.middleware.jwt_auth.get_user_by_id")
 def test_get_user_image_resource_when_no_auth_header_returns_401_status(
-    get_user_by_id,
-    get_image_by_user_id_mock
+    get_user_by_id, get_image_by_user_id_mock
 ):
     get_user_by_id.return_value = user
     get_image_by_user_id_mock.return_value = [mock_image, another_mock_image]
 
-    result = get_testing_client().simulate_get(path=f'/image')
+    result = get_testing_client().simulate_get(path=f"/image")
 
     assert result.status_code == 401
 
@@ -90,11 +77,11 @@ def test_post_user_image_resource(get_user_by_id, put_image_mock, image_store_pu
     proto_image.thumbnail_body = str.encode("some_thumb_body")
 
     result = get_testing_client().simulate_post(
-        path=f'/image',
+        path=f"/image",
         body=proto_image.SerializeToString(),
         headers={
-            'Authorization': f'JWT {SECRET}',
-            'Content-Type': 'application/protobuf',
+            "Authorization": f"JWT {SECRET}",
+            "Content-Type": "application/protobuf",
         },
     )
 

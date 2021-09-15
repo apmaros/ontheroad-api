@@ -1,19 +1,12 @@
 from unittest.mock import patch
 
 
-from generated.proto.login_pb2 import (
-    PostLoginRequest,
-    PostLoginResponse
-)
+from generated.proto.login_pb2 import PostLoginRequest, PostLoginResponse
 from api.secret import secure_hash
-from model.user import User
+from generator import make_mock_user
 from util.api_util import get_testing_client
 
-user = User(
-    username="john",
-    email="john@doe.com",
-    password=secure_hash("secret")
-)
+user = make_mock_user(password=secure_hash("secret"))
 
 
 @patch("api.resources.login.login_resource.get_user_by_email")
@@ -25,11 +18,9 @@ def test_post_login_resource(get_user_by_email_mock) -> None:
     proto_req.password = "secret"
 
     result = get_testing_client().simulate_post(
-        path=f'/login',
+        path=f"/login",
         body=proto_req.SerializeToString(),
-        headers={
-            'Content-Type': 'application/protobuf',
-        }
+        headers={"Content-Type": "application/protobuf"},
     )
 
     assert result.status_code == 200

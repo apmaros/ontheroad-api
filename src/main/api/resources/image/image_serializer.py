@@ -21,7 +21,7 @@ def post_user_image_request_deserializer(req, resp, resource, params):
     msg = image_pb2.PostUserImageRequest()
     msg.ParseFromString(body)
 
-    req.image_body = msg
+    req.body = msg
 
 
 def get_image_response_serializer(req, resp, resource) -> image_pb2.GetImageResponse:

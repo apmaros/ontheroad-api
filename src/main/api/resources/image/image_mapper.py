@@ -6,6 +6,6 @@ def image_from_proto(user_id, proto) -> Image:
         user_id=user_id,
         name=proto.name,
         thumbnail_body=proto.thumbnail_body,
-        body=proto.image_body,
+        image_body=proto.image_body,
         category=proto.category,
     )

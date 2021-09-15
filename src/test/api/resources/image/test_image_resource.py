@@ -14,10 +14,10 @@ created_at = current_time_millis()
 mock_image = Image(
     user_id=user_id,
     name="my-mock-image",
-    thumbnail_body="my-thumbnail".encode('UTF-8'),
-    body="my-body".encode('UTF-8'),
+    thumbnail_body="my-thumbnail".encode("UTF-8"),
+    image_body="my-body".encode("UTF-8"),
     created_at=created_at,
-    id=image_id
+    id=image_id,
 )
 
 
@@ -27,7 +27,7 @@ def test_get_image_returns_image_by_id(get_image_by_id_mock, get_from_cdn_mock):
     get_image_by_id_mock.return_value = mock_image
     get_from_cdn_mock.return_value = str.encode("my_body")
 
-    result = get_testing_client().simulate_get(f'/image/{image_id}')
+    result = get_testing_client().simulate_get(f"/image/{image_id}")
     proto_resp = image_pb2.GetImageResponse()
     proto_resp.ParseFromString(result.content)
     proto_image = proto_resp.image
@@ -40,9 +40,11 @@ def test_get_image_returns_image_by_id(get_image_by_id_mock, get_from_cdn_mock):
 
 @patch.object(ImageStore, "get_from_cdn", autospec=True)
 @patch("api.resources.image.image_resource.get_image_by_id")
-def test_image_returns_404_when_image_not_found(get_image_by_id_mock, get_from_cdn_mock):
+def test_image_returns_404_when_image_not_found(
+    get_image_by_id_mock, get_from_cdn_mock
+):
     get_image_by_id_mock.return_value = None
 
-    result = get_testing_client().simulate_get(f'/image/{image_id}')
+    result = get_testing_client().simulate_get(f"/image/{image_id}")
     assert not get_from_cdn_mock.called
     assert result.status_code == 404

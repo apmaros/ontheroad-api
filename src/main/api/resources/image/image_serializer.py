@@ -21,7 +21,7 @@ def post_user_image_request_deserializer(req, resp, resource, params):
     msg = image_pb2.PostUserImageRequest()
     msg.ParseFromString(body)
 
-    req.body = msg
+    req.image_body = msg
 
 
 def get_image_response_serializer(req, resp, resource) -> image_pb2.GetImageResponse:
@@ -35,7 +35,9 @@ def get_image_response_serializer(req, resp, resource) -> image_pb2.GetImageResp
     resp.text = proto_resp.SerializeToString()
 
 
-def post_user_image_response_serializer(req, resp, resource) -> image_pb2.PostUserImageResponse:
+def post_user_image_response_serializer(
+    req, resp, resource
+) -> image_pb2.PostUserImageResponse:
     image = resp.text
 
     msg = image_pb2.PostUserImageResponse()
@@ -51,8 +53,8 @@ def _serialize_image(image: Image) -> image_pb2.Image:
     proto_image.name = image.name
     if image.thumbnail_body:
         proto_image.thumbnail_body = image.thumbnail_body
-    if image.body:
-        proto_image.image_body = image.body
+    if image.image_body:
+        proto_image.image_body = image.image_body
     proto_image.category = image.category
     proto_image.created_at = int(image.created_at)
     proto_image.id = image.id

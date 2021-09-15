@@ -9,10 +9,10 @@ class ImageStore:
         self.cdn = CdnClient()
 
     def put(self, image: Image):
-        if not image.body:
+        if not image.image_body:
             raise ValueError("Can not store image without body")
 
-        self.s3.put(_get_key(image), image.body)
+        self.s3.put(_get_key(image), image.image_body)
 
     def get(self, image: Image):
         return self.s3.get(_get_key(image))

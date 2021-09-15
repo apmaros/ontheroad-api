@@ -4,7 +4,7 @@ from proto import image_pb2
 
 def assert_image(image: Image, proto_image: image_pb2.Image):
     assert_image_without_body(image=image, proto_image=proto_image)
-    assert image.body == proto_image.image_body
+    assert image.image_body == proto_image.image_body
 
 
 def assert_image_without_body(image: Image, proto_image: image_pb2.Image):

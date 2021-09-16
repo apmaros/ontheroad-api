@@ -4,20 +4,18 @@ from api.resources.user.user_mapper import user_from_proto
 from api.resources.user.user_serializer import (
     get_user_response_serializer,
     post_user_request_deserializer,
-    post_user_response_serializer
+    post_user_response_serializer,
 )
 from db.data_access.user import put_user
 from db.db_client import DbClient
 
 
 class UserResource(object):
-    auth = {
-        'exempt_methods': ['POST']
-    }
+    auth = {"exempt_methods": ["POST"]}
 
     @falcon.after(get_user_response_serializer)
     def on_get(self, req, resp):
-        user = req.context['user']
+        user = req.context["user"]
 
         if user is None:
             resp.status = falcon.HTTP_404

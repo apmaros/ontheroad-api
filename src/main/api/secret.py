@@ -1,10 +1,9 @@
-
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(
-        schemes=["pbkdf2_sha512"],
-        default="pbkdf2_sha512",
-        pbkdf2_sha512__default_rounds=30000
+    schemes=["pbkdf2_sha512"],
+    default="pbkdf2_sha512",
+    pbkdf2_sha512__default_rounds=30000,
 )
 
 

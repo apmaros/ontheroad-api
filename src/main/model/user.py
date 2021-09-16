@@ -14,4 +14,4 @@ class User:
     created_at: str = str(current_time_millis())
     updated_at: Optional[str] = None
 
-    protected_keys = ['password', 'id']
+    protected_keys = ["password", "id"]

@@ -16,7 +16,7 @@ class DbClient:
     def get_item(self, table: str, key: map):
         assert self.client
         result = self.client.Table(table).get_item(Key=key)
-        return result['Item'] if 'Item' in result else None
+        return result["Item"] if "Item" in result else None
 
     def query_index(self, table, index, key, value):
         result = self.client.Table(table).query(
@@ -25,4 +25,4 @@ class DbClient:
             ReturnConsumedCapacity="NONE",
             KeyConditionExpression=Key(key).eq(value),
         )
-        return result['Items'] if 'Items' in result else None
+        return result["Items"] if "Items" in result else None

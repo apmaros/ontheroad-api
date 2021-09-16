@@ -9,7 +9,4 @@ class ServerConfig:
 
 
 def get_server_config() -> ServerConfig:
-    return ServerConfig(
-        os.environ["API_HOST"],
-        int(os.environ["API_PORT"])
-    )
+    return ServerConfig(os.environ["API_HOST"], int(os.environ["API_PORT"]))

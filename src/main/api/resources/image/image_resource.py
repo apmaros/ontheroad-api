@@ -7,9 +7,7 @@ from db.image_store import ImageStore
 
 
 class ImageResource(object):
-    auth = {
-        'exempt_methods': ['GET']
-    }
+    auth = {"exempt_methods": ["GET"]}
 
     @falcon.after(get_image_response_serializer)
     def on_get(self, req, resp, image_id):

@@ -7,5 +7,5 @@ def user_from_proto(proto_user: user_pb2) -> User:
     return User(
         username=proto_user.username,
         email=proto_user.email,
-        password=secure_hash(proto_user.password)
+        password=secure_hash(proto_user.password),
     )

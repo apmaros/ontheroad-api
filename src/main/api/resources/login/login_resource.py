@@ -6,7 +6,8 @@ import jwt
 from api.middleware.jwt_config import default_jwt_config
 from api.resources.login.login_serializer import (
     post_login_request_deserializer,
-    post_login_response_serializer)
+    post_login_response_serializer,
+)
 from api.secret import secret_is_valid
 from db.data_access.user import get_user_by_email
 from db.db_client import DbClient
@@ -15,9 +16,7 @@ from db.db_client import DbClient
 class LoginResource(object):
     logger = logging.getLogger(__name__)
 
-    auth = {
-        'exempt_methods': ['POST']
-    }
+    auth = {"exempt_methods": ["POST"]}
 
     @falcon.before(post_login_request_deserializer)
     @falcon.after(post_login_response_serializer)
@@ -36,15 +35,12 @@ class LoginResource(object):
 
             if secret_is_valid(msg.password, user.password):
                 payload = {
-                    'user_id': str(user.id),
-                    'exp': datetime.utcnow() + timedelta(
-                        hours=self.jwt_config.expire_delta_hours
-                    )
+                    "user_id": str(user.id),
+                    "exp": datetime.utcnow()
+                    + timedelta(hours=self.jwt_config.expire_delta_hours),
                 }
                 jwt_token = jwt.encode(
-                    payload,
-                    self.jwt_config.secret,
-                    self.jwt_config.algorithm
+                    payload, self.jwt_config.secret, self.jwt_config.algorithm
                 )
 
                 # token = jwt.decode(jwt_token, self.jwt_config.secret, algorithms=["HS256"])
@@ -52,10 +48,9 @@ class LoginResource(object):
             else:
                 resp.status = falcon.HTTP_400
         except ValueError:
-            self.logger.debug('cant verify password')
+            self.logger.debug("cant verify password")
             resp.status = falcon.HTTP_400
 
     def __init__(self, db: DbClient):
         self.jwt_config = default_jwt_config
         self.db: DbClient = db
-

@@ -21,10 +21,8 @@ def __build_api(db: DbClient) -> falcon.App:
         middleware=[
             RequireProto(),
             FalconAuthMiddleware(
-                JwtAuth(default_jwt_config, db).get_backend(),
-                [],
-                ['HEAD']
-            )
+                JwtAuth(default_jwt_config, db).get_backend(), [], ["HEAD"]
+            ),
         ]
     )
     api.req_options.auto_parse_form_urlencoded = True

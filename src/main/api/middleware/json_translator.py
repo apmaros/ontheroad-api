@@ -16,21 +16,23 @@ class JSONTranslator(object):
             return
         body = req.bounded_stream.read()
         if not body:
-            raise falcon.HTTPBadRequest('Empty request body',
-                                        'A valid JSON document is required.')
+            raise falcon.HTTPBadRequest(
+                "Empty request body", "A valid JSON document is required."
+            )
 
         try:
-            req.context.doc = json.loads(body.decode('utf-8'))
+            req.context.doc = json.loads(body.decode("utf-8"))
         except (ValueError, UnicodeDecodeError):
-            raise falcon.HTTPError(falcon.HTTP_753,
-                                   'Malformed JSON',
-                                   'Could not decode the request body. The '
-                                   'JSON was incorrect or not encoded as '
-                                   'UTF-8.')
-
+            raise falcon.HTTPError(
+                falcon.HTTP_753,
+                "Malformed JSON",
+                "Could not decode the request body. The "
+                "JSON was incorrect or not encoded as "
+                "UTF-8.",
+            )
 
     def process_response(self, req, resp, resource, _):
-        if not hasattr(resp.context, 'result'):
+        if not hasattr(resp.context, "result"):
             return
 
         resp.body = json.dumps(resp.body)

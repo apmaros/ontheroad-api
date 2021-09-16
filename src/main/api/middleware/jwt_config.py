@@ -9,8 +9,4 @@ class JwtConfig:
     expire_delta_hours: int
 
 
-default_jwt_config = JwtConfig(
-    os.environ['JWT_SECRET'],
-    'HS256',
-    12
-)
+default_jwt_config = JwtConfig(os.environ["JWT_SECRET"], "HS256", 12)

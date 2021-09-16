@@ -9,6 +9,6 @@ class CdnClient:
         :param path to the object stored in CDN
         :return: returns fetched object in bytes
         """
-        resp = requests.get(f'{self.CDN_URL}/{path}')
+        resp = requests.get(f"{self.CDN_URL}/{path}")
 
         return resp.content

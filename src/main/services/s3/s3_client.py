@@ -10,19 +10,12 @@ class S3Client:
         self.client = get_s3_client()
 
     def put(self, key, body):
-        return self.client.put_object(
-            Bucket=BUCKET,
-            Body=body,
-            Key=key
-        )
+        return self.client.put_object(Bucket=BUCKET, Body=body, Key=key)
 
     def get(self, key) -> Optional[bytes]:
-        object = self.client.get_object(
-            Bucket=BUCKET,
-            Key=key
-        )
+        object = self.client.get_object(Bucket=BUCKET, Key=key)
 
-        if object['Body']:
-            return object['Body'].read()
+        if object["Body"]:
+            return object["Body"].read()
         else:
             return None

@@ -11,11 +11,11 @@ class JwtAuth(object):
             user_loader=self.__get_user,
             secret_key=self.config.secret,
             algorithm=self.config.algorithm,
-            required_claims=['exp']
+            required_claims=["exp"],
         )
 
     def __get_user(self, token):
-        return get_user_by_id(self.db, token['user_id'])
+        return get_user_by_id(self.db, token["user_id"])
 
     def __init__(self, config: JwtConfig, db: DbClient):
         self.db = db

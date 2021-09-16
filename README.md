@@ -1,4 +1,6 @@
 # On The Road API
+[![.github/workflows/deploy-stack.yml](https://github.com/apmaros/ontheroad-api/actions/workflows/deploy-stack.yml/badge.svg)](https://github.com/apmaros/ontheroad-api/actions/workflows/deploy-stack.yml)
+
 
 🛣
 

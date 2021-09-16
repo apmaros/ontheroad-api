@@ -38,7 +38,6 @@ jobs:
         run: pip install black
       - name: Run Black
         run: black --check src
-
       - name: Check Style and Test
         run: |
           export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"

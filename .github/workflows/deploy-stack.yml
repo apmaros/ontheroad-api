@@ -21,4 +21,4 @@ jobs:
         uses: unfor19/install-aws-cli-action@v1
       - name: Create Lambda
         run: |
-          aws cloudformation create-stack --stack-name test --template-body file://cloudformation/ontheroad-s3-sync-template.yaml --region=eu-west-1
+          aws cloudformation create-stack --stack-name test --template-body file://cloudformation/ontheroad-s3-sync-template.yaml --region=eu-west-1 --capabilities=CAPABILITY_AUTO_EXPAND

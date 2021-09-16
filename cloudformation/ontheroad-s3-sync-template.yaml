@@ -5,21 +5,19 @@ Description: >
 
   Sample SAM Template for ontheroad-s3-sync
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
 
 Resources:
   OntheroadS3Sync:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../ontheroad-s3-sync/src/
       Handler: app.lambda_handler
       Runtime: python3.8
       Environment:
         Variables:
-          MY_SNS_TOPIC_ARN: !Ref s3SyncTopic
           MY_SQS_QUEUE_URL: !Ref s3SyncQueue
       Events:
         SqsJobQueue:
@@ -27,16 +25,16 @@ Resources:
           Properties:
             Queue: !GetAtt s3SyncQueue.Arn
             BatchSize: 1
-  s3SyncTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: "s3-sync-topic"
   s3SyncQueue:
     Type: AWS::SQS::Queue
-  s3SyncQueueToSnsSubscription:
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: !GetAtt s3SyncQueue.Arn
-      Protocol: sqs
-      RawMessageDelivery: true
-      TopicArn: !Ref s3SyncTopic
+
+
+Outputs:
+  OntheroadS3Sync:
+    Description: "OntheroadS3Sync Function ARN consumes messages from SQS and publishes image body to S3"
+    Value: !GetAtt OntheroadS3Sync.Arn
+  OntheroadS3SyncIamRole:
+    Description: "Implicit IAM Role created for OntheroadS3Sync function"
+    Value: !GetAtt OntheroadS3SyncRole.Arn
+  s3SyncQueue:
+    Value: !GetAtt s3SyncQueue.QueueName

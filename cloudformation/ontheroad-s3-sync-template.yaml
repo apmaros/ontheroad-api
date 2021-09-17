@@ -27,7 +27,12 @@ Resources:
             BatchSize: 1
   s3SyncQueue:
     Type: AWS::SQS::Queue
-
+  OnTheRoadECR:
+    Type: AWS::ECR::Repository
+    Properties:
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      RepositoryName: ontheroad-api
 
 Outputs:
   OntheroadS3Sync:

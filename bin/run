@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"
 echo "$(date) initiated application start"
 python src/main/main.py

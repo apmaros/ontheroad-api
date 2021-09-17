@@ -1,12 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: An example CloudFormation template for Fargate.
 Parameters:
-  VPC:
-    Type: AWS::EC2::VPC::Id
-  PrivateSubnet1:
-    Type: AWS::EC2::Subnet::Id
-  PrivateSubnet2:
-    Type: AWS::EC2::Subnet::Id
+  NetworkStackName:
+    Type: String
+    Default: "ontheroad-networking"
   Certificate:
     Type: String
     # Update with the certificate ARN from Certificate Manager, which must exist in the same region.
@@ -137,7 +134,9 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: !Join ['', [!Ref ServiceName, ContainerSecurityGroup]]
-      VpcId: !Ref VPC
+      VpcId:
+        - Fn::ImportValue:
+            !Sub "${NetworkStackName}-vpc"
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: !Ref ContainerPort
@@ -147,7 +146,9 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: !Join ['', [!Ref ServiceName, LoadBalancerSecurityGroup]]
-      VpcId: !Ref VPC
+      VpcId:
+        - Fn::ImportValue:
+            !Sub "${NetworkStackName}-vpc"
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: !Ref LoadBalancerPort
@@ -174,8 +175,8 @@ Resources:
           # change to DISABLED if you're using private subnets that have access to a NAT gateway
           AssignPublicIp: ENABLED
           Subnets:
-            - !Ref PrivateSubnet1
-            - !Ref PrivateSubnet2
+            - Fn::ImportValue:
+                !Sub "${NetworkStackName}-PrivateSubnets"
           SecurityGroups:
             - !Ref ContainerSecurityGroup
       LoadBalancers:
@@ -198,7 +199,9 @@ Resources:
         - Key: deregistration_delay.timeout_seconds
           Value: 60 # default is 300
       TargetType: ip
-      VpcId: !Ref VPC
+      VpcId:
+        - Fn::ImportValue:
+            !Sub "${NetworkStackName}-vpc"
   ListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -223,8 +226,8 @@ Resources:
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
       Subnets:
-        - !Ref PrivateSubnet1
-        - !Ref PrivateSubnet2
+        - Fn::ImportValue:
+            !Sub "${NetworkStackName}-PrivateSubnets"
   DNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:

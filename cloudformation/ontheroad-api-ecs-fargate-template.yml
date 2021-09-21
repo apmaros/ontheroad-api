@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: An example CloudFormation template for Fargate.
+Description: This template deploys backend services on Fargate ECS
 Parameters:
   NetworkStackName:
     Type: String
@@ -7,14 +7,13 @@ Parameters:
   Certificate:
     Type: String
     # Update with the certificate ARN from Certificate Manager, which must exist in the same region.
-    Default: 'arn:aws:acm:region:123456789012:certificate/00000000-0000-0000-0000-000000000000'
+    Default: 'arn:aws:acm:eu-west-1:790519624110:certificate/55dacdcf-095e-4f69-b2c0-91cee0d3e192'
   Image:
     Type: String
     # Update with the Docker image. "You can use images in the Docker Hub registry or specify other repositories (repository-url/image:tag)."
     Default: 790519624110.dkr.ecr.eu-west-1.amazonaws.com/ontheroad-api:latest
   ServiceName:
     Type: String
-    # update with the name of the service
     Default: OnTheRoadApi
   ContainerPort:
     Type: Number
@@ -24,7 +23,7 @@ Parameters:
     Default: 443
   HealthCheckPath:
     Type: String
-    Default: /healthcheck
+    Default: /statz
   HostedZoneName:
     Type: String
     Default: company.com
@@ -89,6 +88,14 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-group: !Ref LogGroup
               awslogs-stream-prefix: ecs
+#          Disable until fixed networking
+#          Secrets:
+#            - Name: "JWT_TOKEN"
+#              ValueFrom: "arn:aws:ssm:us-east-1:790519624110:parameter/JWT_TOKEN"
+#            - Name: "API_HOST"
+#              ValueFrom: "arn:aws:ssm:us-east-1:790519624110:parameter/API_HOST"
+#            - Name: "API_PORT"
+#              ValueFrom: "arn:aws:ssm:us-east-1:790519624110:parameter/API_PORT"
   # A role needed by ECS
   ExecutionRole:
     Type: AWS::IAM::Role
@@ -113,6 +120,20 @@ Resources:
             Principal:
               Service: ecs-tasks.amazonaws.com
             Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: TaskParams
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "ssm:GetParameters"
+                  - "secretsmanager:GetSecretValue"
+                Resource:
+                    - "arn:aws:ssm:us-east-1:790519624110:parameter/JWT_TOKEN"
+                    - "arn:aws:ssm:us-east-1:790519624110:parameter/API_HOST"
+                    - "arn:aws:ssm:us-east-1:790519624110:parameter/API_PORT"
+
       # ManagedPolicyArns:
       #   -
       # Policies:
@@ -134,9 +155,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: !Join ['', [!Ref ServiceName, ContainerSecurityGroup]]
-      VpcId:
-        - Fn::ImportValue:
-            !Sub "${NetworkStackName}-vpc"
+      VpcId: "vpc-0454f83faf735bfc3"
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: !Ref ContainerPort
@@ -146,9 +165,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: !Join ['', [!Ref ServiceName, LoadBalancerSecurityGroup]]
-      VpcId:
-        - Fn::ImportValue:
-            !Sub "${NetworkStackName}-vpc"
+      VpcId: "vpc-0454f83faf735bfc3"
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: !Ref LoadBalancerPort
@@ -175,8 +192,8 @@ Resources:
           # change to DISABLED if you're using private subnets that have access to a NAT gateway
           AssignPublicIp: ENABLED
           Subnets:
-            - Fn::ImportValue:
-                !Sub "${NetworkStackName}-PrivateSubnets"
+            - Fn::ImportValue: !Sub "${NetworkStackName}-PublicSubnet1"
+            - Fn::ImportValue: !Sub "${NetworkStackName}-PublicSubnet2"
           SecurityGroups:
             - !Ref ContainerSecurityGroup
       LoadBalancers:
@@ -199,9 +216,7 @@ Resources:
         - Key: deregistration_delay.timeout_seconds
           Value: 60 # default is 300
       TargetType: ip
-      VpcId:
-        - Fn::ImportValue:
-            !Sub "${NetworkStackName}-vpc"
+      VpcId: "vpc-0454f83faf735bfc3"
   ListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -226,17 +241,17 @@ Resources:
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
       Subnets:
-        - Fn::ImportValue:
-            !Sub "${NetworkStackName}-PrivateSubnets"
-  DNSRecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneName: !Join ['', [!Ref HostedZoneName, .]]
-      Name: !Join ['', [!Ref Subdomain, ., !Ref HostedZoneName, .]]
-      Type: A
-      AliasTarget:
-        DNSName: !GetAtt LoadBalancer.DNSName
-        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
+        - Fn::ImportValue: !Sub "${NetworkStackName}-PublicSubnet1"
+        - Fn::ImportValue: !Sub "${NetworkStackName}-PublicSubnet2"
+#  DNSRecord:
+#    Type: AWS::Route53::RecordSet
+#    Properties:
+#      HostedZoneName: !Join ['', [!Ref HostedZoneName, .]]
+#      Name: !Join ['', [!Ref Subdomain, ., !Ref HostedZoneName, .]]
+#      Type: A
+#      AliasTarget:
+#        DNSName: !GetAtt LoadBalancer.DNSName
+#        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
   LogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -264,7 +279,7 @@ Resources:
         ScaleOutCooldown: 10
         # Keep things at or lower than 50% CPU utilization, for example
         TargetValue: !Ref AutoScalingTargetValue
-Outputs:
-  Endpoint:
-    Description: Endpoint
-    Value: !Join ['', ['https://', !Ref DNSRecord]]
+#Outputs:
+#  Endpoint:
+#    Description: Endpoint
+#    Value: !Join ['', ['https://', !Ref DNSRecord]]

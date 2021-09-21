@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 export PYTHONPATH="${PWD}:${PWD}/src/main/:${PWD}/src/test/:${PWD}/generated/"
 echo "$(date) initiated application start"
+export JWT_SECRET='secret'
+export API_HOST='127.0.0.1'
+export API_PORT='80'
 python src/main/main.py

@@ -17,6 +17,7 @@ RUN apt-get update \
 RUN pip install --no-cache-dir -r requirements/prod.txt
 
 # expose API port
+EXPOSE 80
 EXPOSE 4000
 
 CMD [ "/bin/bash", "/usr/src/app/bin/run" ]

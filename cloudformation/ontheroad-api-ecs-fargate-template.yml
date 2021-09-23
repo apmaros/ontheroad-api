@@ -7,11 +7,11 @@ Parameters:
   Certificate:
     Type: String
     # Update with the certificate ARN from Certificate Manager, which must exist in the same region.
-    Default: 'arn:aws:acm:eu-west-1:790519624110:certificate/55dacdcf-095e-4f69-b2c0-91cee0d3e192'
+    Default: 'arn:aws:acm:eu-west-1:790519624110:certificate/449967c1-a0a6-4b93-9a56-cb475b075d43'
   Image:
     Type: String
     # Update with the Docker image. "You can use images in the Docker Hub registry or specify other repositories (repository-url/image:tag)."
-    Default: 790519624110.dkr.ecr.eu-west-1.amazonaws.com/ontheroad-api:latest
+    Default: 790519624110.dkr.ecr.eu-west-1.amazonaws.com/ontheroad-api:dca1206fa43860890ac34cdaf937faf6c5568da8
   ServiceName:
     Type: String
     Default: OnTheRoadApi
@@ -26,7 +26,7 @@ Parameters:
     Default: /statz
   HostedZoneName:
     Type: String
-    Default: company.com
+    Default: marosnotes.com
   Subdomain:
     Type: String
     Default: api
@@ -183,7 +183,7 @@ Resources:
       DeploymentConfiguration:
         MinimumHealthyPercent: 100
         MaximumPercent: 200
-      DesiredCount: 2
+      DesiredCount: 1
       # This may need to be adjusted if the container takes a while to start up
       HealthCheckGracePeriodSeconds: 30
       LaunchType: FARGATE
@@ -243,15 +243,15 @@ Resources:
       Subnets:
         - Fn::ImportValue: !Sub "${NetworkStackName}-PublicSubnet1"
         - Fn::ImportValue: !Sub "${NetworkStackName}-PublicSubnet2"
-#  DNSRecord:
-#    Type: AWS::Route53::RecordSet
-#    Properties:
-#      HostedZoneName: !Join ['', [!Ref HostedZoneName, .]]
-#      Name: !Join ['', [!Ref Subdomain, ., !Ref HostedZoneName, .]]
-#      Type: A
-#      AliasTarget:
-#        DNSName: !GetAtt LoadBalancer.DNSName
-#        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
+  DNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Join ['', [!Ref HostedZoneName, .]]
+      Name: !Join ['', [!Ref Subdomain, ., !Ref HostedZoneName, .]]
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt LoadBalancer.DNSName
+        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
   LogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
